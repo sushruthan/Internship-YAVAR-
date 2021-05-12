@@ -12,3 +12,18 @@ etc/telegraf/telegraf.conf
 
 
 
+#Generate a telegraf config file:
+telegraf config > telegraf.conf
+
+#Generate config with only cpu input & influxdb output plugins defined:
+telegraf --section-filter agent:inputs:outputs --input-filter cpu --output-filter influxdb config
+
+
+#Run a single telegraf collection, outputting metrics to stdout:
+telegraf --config telegraf.conf --test
+
+#Run telegraf with all plugins defined in config file:
+telegraf --config telegraf.conf
+
+#Run telegraf, enabling the cpu & memory input, and influxdb output plugins:
+telegraf --config telegraf.conf --input-filter cpu:mem --output-filter influxdb
