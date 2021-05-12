@@ -1,0 +1,41 @@
+Strings, which are widely used in Go programming, are a readonly slice of bytes.
+ In the Go programming language, strings are slices. The Go platform provides various
+  libraries to manipulate strings.
+
+unicode
+regexp
+strings
+
+Creating Strings
+The most direct way to create a string is to write −
+
+var greeting string = "Hello world!"
+
+ARRAY
+
+Go programming language provides a data structure called the array, 
+which can store a fixed-size sequential collection of elements of the same type.
+ An array is used to store a collection of data, but it is often more useful to 
+ think of an array as a collection of variables of the same type.
+Declaring Arrays
+To declare an array in Go, a programmer specifies the type of the elements and the number of elements required by an array as follows −
+
+var variable_name [SIZE] variable_type
+
+Pointers
+
+Pointers in Go are easy and fun to learn. Some Go programming tasks are performed more easily
+ with pointers, and other tasks, such as call by reference, cannot be performed without using 
+ pointers. So it becomes necessary to learn pointers to become a perfect Go programmer.
+
+As you know, every variable is a memory location and every memory location has its address defined 
+which can be accessed using ampersand (&) operator, which denotes an address in memory.
+
+A pointer is a variable whose value is the address of another variable, 
+i.e., direct address of the memory location. Like any variable or constant, 
+you must declare a pointer before you can use it to store any variable address.
+ The general form of a pointer variable declaration is −
+
+var var_name *var-type
+var ip *int        /* pointer to an integer */
+var fp *float32    /* pointer to a float */

@@ -1,0 +1,150 @@
+Data types
+Go has the following architecture-independent integer types:
+uint8       unsigned  8-bit integers (0 to 255)
+uint16      unsigned 16-bit integers (0 to 65535)
+uint32      unsigned 32-bit integers (0 to 4294967295)
+uint64      unsigned 64-bit integers (0 to 18446744073709551615)
+int8        signed  8-bit integers (-128 to 127)
+int16       signed 16-bit integers (-32768 to 32767)
+int32       signed 32-bit integers (-2147483648 to 2147483647)
+int64       signed 64-bit integers (-9223372036854775808 to 9223372036854775807)
+
+Floats and complex numbers:
+float32     IEEE-754 32-bit floating-point numbers
+float64     IEEE-754 64-bit floating-point numbers
+complex64   complex numbers with float32 real and imaginary parts
+complex128  complex numbers with float64 real and imaginary parts
+
+There are also a couple of alias number types, which assign useful names to specific data types:
+byte        alias for uint8
+rune        alias for int32
+ 
+Go has the following implementation-specific types:
+uint     unsigned, either 32 or 64 bits
+int      signed, either 32 or 64 bits uintptr  unsigned integer large enough to store the uninterpreted bits of a pointer value
+
+Declaring a variable
+To declare a single variable, you can use the following syntax.
+
+var variableName dataType = initialValue
+
+initialValue is optional. If you do not give an initial value in the variable 
+assignment, it will hold the zero-value of its data type.
+
+var integer1 int = 15
+var integer2 int8 = -25
+var integer3 int32 // default 0
+var float1 float32 = 63.2
+var string1 string = "Hello World!"
+var boolean1 bool // default false
+var boolean2 bool = true
+
+Short-hand notation
+Go also provide a shorthand syntax to declare a variable. In this syntax, you can drop var and dataType.
+variableName := initialValue
+
+integer1 := 52 //int
+string1 := "Hello World" //string
+boolean1 := false //bool
+
+Multiple variable declarations
+
+You can declare multiple variables of the same data type in a single statement using the syntax below.
+
+var var1, var2, var3 int
+
+You can also assign initial values to these variables. You must assign all the variables with an initial value.
+
+var var1, var2, var3 int = 1, 2, 3
+
+You can also drop the data type declaration in the above syntax and let Go infer the data types from their initial values. This way you can declare multiple variables with different data types on a single line.
+
+var var1, var2, var3 = 1, 2.2, false
+
+You can also use the shorthand notation instead of the above statement.
+
+var1, var2, var3 := 1, 2.2, false
+
+Type conversion
+
+In Go, you can not perform add or subtract (or any arithmetic) operations on variables to two different data types. Hence variables first must be converted to the same data type.
+
+In Go, this conversion is very simple. Just wrap any variable inside parenthesis with the data type prefix that you want to convert that variable into. The syntax to convert data to a data type is type(var).
+
+var1 := 10 // int
+var2 := 10.5 // float64
+// illegal
+// var3 := var1 + var2
+// legal
+var3 := var1 + int(var2) // var3 => 20
+You can also use multiple lines to declare variables of different data types with a single use of var keyword. In this syntax, you do not have to provide initial values to all the variables.
+var (
+    var1        = 50
+    var2        = 25.22
+    var3 string = "Telefonía"
+    var4 bool
+)
+
+What is a constant
+
+Constant is a variable in Go with a fixed value. Any attempt to change the value of a constant will cause a run-time panic. Constant must be declared with const keyword and an initial value.
+
+Multiple constants declaration
+
+Like variables, multiple constants can be declared in one statement.
+
+const const_1, const_2 = value_1, value_2
+
+Or you can use the multiple-line variable declaration syntax.
+
+const (
+    const_1 = value_1
+    const_2 = value_2
+)
+
+In a parenthesized const declaration, expressions can be implicitly repeated -this indicates a repetition of the preceding expression.
+
+const (
+	a = 1 // a == 1
+	b = 2 // b == 2
+	c     // c == 2
+	d     // d == 2
+)
+
+const const_name [data_type] = fixed_value
+
+The iota expression
+
+Go provides a keyword iota that can be used when declaring enumerated constants. This keyword yields an incremented value by 1 starting from 0, each time it is used.
+
+const (
+    a = iota // a == 0
+    b = iota // b == 1
+    c = iota // c == 2
+    d        // d == 3 (implicitely d = iota)
+)
+
+Use _ (blank identifier) to skip a value. _ will receive the value of iota + 1 but will save the value in the garbage scope.
+
+const (
+	a = iota + 1 // a == 1
+	_            // (implicitly _ = iota + 1 )
+	b            // b == 3 (implicitly b = iota + 1 )
+	c            // c == 4 (implicitly c = iota + 1 )
+)
+
+One crucial to remember here is that, iota can only be used with variables defined with const. iota will always return an integer of type int. The scope of iota is restricted to the const block.
+
+const a = iota // 0
+const b = iota // 0
+
+const (
+  c = iota // 0
+  d = iota // 1
+)
+
+const (
+  e = iota // 0
+  f = iota // 1
+)
+

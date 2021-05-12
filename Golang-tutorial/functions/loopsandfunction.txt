@@ -1,0 +1,53 @@
+Decision making structures require that the programmer specify one or more conditions to be evaluated
+ or tested by the program, along with a statement or statements to be executed if the condition is 
+ determined to be true, and optionally,other statements to be executed if the condition is determined to be false.
+
+IF loops
+The if statement - executes some code if one condition is true
+The if...else statement - executes some code if a condition is true and another code if that condition is false
+The if...else if....else statement - executes different codes for more than two conditions
+The switch...case statement - selects one of many blocks of code to be executed
+
+Switch case
+Switch statements are an alternative way to express lengthy if else comparisons into more readable code based on the state of a variable.
+The fallthrough keyword used to force the execution flow to fall through the successive case block.
+
+FOR loop
+A for loop is used for iterating over a sequence (that is either a slice, an array, a map, or a string.
+As a language related to the C-family, Golang also supports for loop style control structures.
+Golang has no while loop because the for loop serves the same purpose when used with a single condition.
+
+#Nested loops
+FUNCTION
+A function is a group of statements that exist within a program for the purpose of performing a specific task. At a high level, a function takes an input and returns an output.
+Function allows you to extract commonly used block of code into a single component.
+The single most popular Go function is main(), which is used in every independent Go program.
+
+Creating a Function in Golang
+A declaration begins with the func keyword, followed by the name you want the function to have, 
+a pair of parentheses (), and then a block containing the function's code.
+Variadic Functions
+A variadic function is a function that accepts a variable number of arguments. In Golang, it is possible to pass a varying number of arguments of the same type as referenced in the function signature. To declare a variadic function, the type of the final parameter is preceded by an ellipsis, "...", which shows that the function may be called with any number of arguments of this type. This type of function is useful when you don't know the number of arguments you are passing to the function, the best example is built-in Println function of the fmt package which is a variadic function.
+
+Deferred Functions Calls
+Go has a special statement called defer that schedules a function call to be run after the function completes.
+package main
+import "fmt"
+func first() {
+	fmt.Println("First")
+}
+func second() {
+	fmt.Println("Second")
+}
+func main() {
+	defer second()
+	first()
+}//second prints after first
+
+
+
+Example
+KEY DIFFERENCE BETWEEN CALL BY VALUE AND CALL BY REFERENCE
+In Call by value method original value is not modified whereas, in Call by reference method, the original value is modified.
+In Call by value, a copy of the variable is passed whereas in Call by reference, a variable itself is passed.
+In Call by value, actual and formal arguments will be created in different memory locations whereas in Call by reference, actual and formal arguments will be created in the same memory location.
