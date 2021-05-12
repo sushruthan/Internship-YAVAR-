@@ -1,0 +1,14 @@
+sudo service influxd start
+sudo service influxd status
+sudo service influxd stop
+influx (cloud cli command)
+telegraf --config /home/sush/Downloads/randomnumber.conf
+make telegraf
+etc/telegraf/telegraf.conf
+./telegraf -sample-config -input-filter trig -output-filter influxdb -debug
+./telegraf -sample-config -input-filter trig -output-filter influxdb >> telegraf.conf.test 
+./telegraf -config telegraf.conf.test -debug
+./telegraf -config /home/sush/Downloads/randomnumber.config -debug
+
+
+
