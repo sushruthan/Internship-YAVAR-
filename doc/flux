@@ -75,52 +75,179 @@ from(bucket:"example-bucket")
   )
   |> yield()
 
+##Transform data with Flux
+Flux functions
+ Aggregate functions take a set of _values in a table, aggregate them, and transform them into a new value.
+mean() function to average values within each time window.
+
+https://docs.influxdata.com/influxdb/v2.0/reference/flux/stdlib/
+https://docs.influxdata.com/influxdb/v2.0/query-data/flux/custom-functions/
+
+##Window your data
+Flux’s window() function partitions records based on a time value. Use the every parameter to define a duration of each window.
+
+from(bucket:"example-bucket")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+    r._measurement == "cpu" and
+    r._field == "usage_system" and
+    r.cpu == "cpu-total"
+  )
+  |> window(every: 5m)
+As data is gathered into windows of time, each window is output as its own table. When visualized, each table is assigned a unique color.
+IMAGE ATTACHED BELOW
+https://docs.influxdata.com/img/flux/windowed-data.png
+
+Aggregate windowed data
+Flux aggregate functions take the _values in each table and aggregate them in some way. Use the mean() function to average the _values of each table.
+
+from(bucket:"example-bucket")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+    r._measurement == "cpu" and
+    r._field == "usage_system" and
+    r.cpu == "cpu-total"
+  )
+  |> window(every: 5m)
+  |> mean()
+
+Add times to your aggregates
+
+Unwindow aggregate tables
+
+Helper functions
+Flux provides (and allows you to create) “helper” functions that abstract many of these steps. The same operation performed in this guide can be accomplished using the aggregateWindow() function.
+
+Syntax basics
 
 
+> 1 + 1
+2
+> s = "this is a string"
+> i = 1 // an integer
+> f = 2.0 // a floating point number
+> s
+this is a string
+> i
+1
+> f
+2
+
+Records
+
+Flux also supports records, collections of key-value pairs. Each key must be a string. Values can be a different data types.
+
+> o = {name:"Jim", age: 42, "favorite color": "red"}
+
+Use dot notation to access a properties of a record:
+
+> o.name
+Jim
+> o.age
+42
+
+Or bracket notation:
+
+> o["name"]
+Jim
+> o["age"]
+42
+> o["favorite color"]
+red
+
+Arrays
+
+Flux supports arrays. All values in an array must be the same type.
+
+> n = 4
+> l = [1,2,3,n]
+> l
+[1, 2, 3, 4]
+
+Use bracket notation to access a value at a specific index in an array:
+
+> a = ["foo","bar","baz","quz"]
+> a[0]
+foo
+
+Dictionaries
+
+> d = [1: "foo", 2: "bar"]
+> import "dict"
+> dict.get(dict: d, key: "1", default: "")
+foo
+
+Functions
+
+> square = (n) => n * n
+> square(n:3)
+9
+
+
+Pipe-forward operator
+
+Flux uses the pipe-forward operator (|>) extensively to chain operations together. After each function or operation, Flux returns a table or collection of tables containing data. The pipe-forward operator pipes those tables into the next function where they are further processed or manipulated.
+
+data |> someFunction() |> anotherFunction()
+
+Define data stream variables
+
+A common use case for variable assignments in Flux is creating variables for one or more input data streams.
+
+Multi-line Single-line
+
+timeRange = -1h
+
+cpuUsageUser =
+  from(bucket:"example-bucket")
+    |> range(start: timeRange)
+    |> filter(fn: (r) =>
+      r._measurement == "cpu" and
+      r._field == "usage_user" and
+      r.cpu == "cpu-total"
+    )
+
+memUsagePercent =
+  from(bucket:"example-bucket")
+    |> range(start: timeRange)
+    |> filter(fn: (r) =>
+      r._measurement == "mem" and
+      r._field == "used_percent"
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+..........Query data with Flux...........
+
+    data is defined as:
+
+data = from(bucket: "example-bucket")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+    r._measurement == "example-measurement" and
+    r._field == "example-field"
+  )
+
     
     
-    
-    
-    
-    
-    
-    
-    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    
    
    
@@ -207,4 +334,3 @@ join(
     Cast booleans to integers
     String manipulation and data shaping
     Work with geo-temporal data
-
