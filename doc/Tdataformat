@@ -1,0 +1,69 @@
+###Telegraf input data formats
+
+https://docs.influxdata.com/telegraf/v1.17/data_formats/input/
+
+#Telegraf supports the following input data formats:
+
+    #InfluxDB Line Protocol
+    	|measurement|,tag_set| |field_set| |timestamp|
+    	weather,location=us-midwest,season=summer temperature=82 1465839830100400200
+    collectd
+    CSV
+    Dropwizard
+    Graphite
+    Grok
+    JSON
+    logfmt
+    Nagios
+    Prometheus
+    Value, ie: 45 or “booyah”
+    Wavefront
+    
+  ###Telegraf output data formats 
+  Telegraf output plugins format 
+
+    Carbon2
+    Graphite
+    InfluxDB Line Protocol
+    JSON
+    Prometheus
+    Prometheus Remote Write
+    ServiceNow Metrics
+    SplunkMetric
+    Wavefront 
+    
+    
+    
+    You will be able to identify the plugins with support by the presence of a data_format configuration option, for example, in the File (file) output plugin:
+
+[[outputs.file]]
+  ## Files to write to, "stdout" is a specially handled file.
+  files = ["stdout"]
+
+  ## Data format to output.
+  ## Each data format has its own unique set of configuration options, read
+  ## more about them here:
+  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  data_format = "influx"
+
+
+Configuring Telegraf and agent configuration
+https://docs.influxdata.com/telegraf/v1.17/administration/configuration/
+
+agent input configuration example
+[agent]
+  interval = "10s"
+
+# OUTPUTS
+[[outputs.influxdb]]
+  url = "http://192.168.59.103:8086" # required.
+  database = "telegraf" # required.
+  precision = "s"
+
+# INPUTS
+[[inputs.cpu]]
+  percpu = true
+  totalcpu = false
+  # filter all fields beginning with 'time_'
+  fielddrop = ["time_*"]
+
