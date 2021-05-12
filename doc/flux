@@ -1,0 +1,210 @@
+https://docs.influxdata.com/influxdb/v2.0/query-data/get-started/query-influxdb/
+Every Flux query needs the following:
+
+    A data source
+    A time range
+    Data filters
+-----------------------------------------------------
+>>Define your data source
+
+Flux’s from() function defines an InfluxDB data source.
+	
+	from(bucket:"example-bucket")
+
+>>Specify a time range
+
+Flux requires a time range when querying time series data. “Unbounded” queries are very resource-intensive and as a protective measure, Flux will not query the database without a specified range.	
+Use the pipe-forward operator (|>) to pipe data from your data source into the range() function, which specifies a time range for your query. It accepts two parameters: start and stop. Ranges can be relative using negative durations or absolute using timestamps.
+
+// Relative time range with start only. Stop defaults to now.
+	from(bucket:"example-bucket")
+    	  |> range(start: -1h)
+
+// Relative time range with start and stop
+	from(bucket:"example-bucket")
+  	  |> range(start: -1h, stop: -10m)
+  
+  absolute time range
+
+	from(bucket:"example-bucket")
+  	  |> range(start: 2018-11-05T23:30:00Z, stop: 2018-11-06T00:00:00Z)
+
+to limit query results to data from the last 15 minutes:
+
+	from(bucket:"example-bucket")
+  	  |> range(start: -15m)
+
+
+>>Filter your data
+
+Pass your ranged data into the filter() function to narrow results based on data attributes or columns. The filter() function has one parameter, fn, which expects an anonymous function with logic that filters data based on columns or attributes.
+
+
+// Pattern
+	(r) => (r.recordProperty comparisonOperator comparisonExpression)
+
+// Example with single filter
+	(r) => (r._measurement == "cpu")
+
+// Example with multiple filters
+	(r) => (r._measurement == "cpu") and (r._field != "usage_system" )
+
+filter by the cpu measurement, the usage_system field, and the cpu-total tag value:
+
+from(bucket:"example-bucket")
+  |> range(start: -15m)//https://docs.influxdata.com/influxdb/v2.0/reference/flux/stdlib/built-in/transformations/range/
+  |> filter(fn: (r) =>
+    r._measurement == "cpu" and
+    r._field == "usage_system" and
+    r.cpu == "cpu-total"
+  )
+
+
+>>Yield your queried data
+
+Flux’s yield() function outputs the filtered tables as the result of the query.
+   
+Flux automatically assumes a yield() function at the end of each script in order to output and visualize the data. Explicitly calling yield() is only necessary when including multiple queries in the same Flux query.
+
+from(bucket:"example-bucket")
+  |> range(start: -15m)
+  |> filter(fn: (r) =>
+    r._measurement == "cpu" and
+    r._field == "usage_system" and
+    r.cpu == "cpu-total"
+  )
+  |> yield()
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    
+    Tasks possible with Flux --https://docs.influxdata.com/influxdb/v2.0/reference/flux/flux-vs-influxql/
+
+    Joins---lets you join data from any bucket, any measurement, and on any columns as long as each data set includes the columns to join on.
+    dataStream1 = from(bucket: "example-bucket1")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+    r._measurement == "network" and
+    r._field == "bytes-transferred"
+  )
+
+dataStream2 = from(bucket: "example-bucket2")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+    r._measurement == "httpd" and
+    r._field == "requests-per-sec"
+    )
+
+join(
+    tables: {d1:dataStream1, d2:dataStream2},
+    on: ["_time", "_stop", "_start", "host"]
+  )
+
+    Math across measurements--Being able to perform joins across measurements lets you calculate data from separate measurements.
+    // Memory used (in bytes)
+memUsed = from(bucket: "example-bucket")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+    r._measurement == "mem" and
+    r._field == "used"
+  )
+
+// Total processes running
+procTotal = from(bucket: "example-bucket")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+    r._measurement == "processes" and
+    r._field == "total"
+    )
+
+// Join memory used with total processes to calculate
+// the average memory (in MB) used for running processes.
+join(
+    tables: {mem:memUsed, proc:procTotal},
+    on: ["_time", "_stop", "_start", "host"]
+  )
+  |> map(fn: (r) => ({
+    _time: r._time,
+    _value: (r._value_mem / r._value_proc) / 1000000
+  })
+)
+
+    Sort by tags--
+    from(bucket:"example-bucket")
+  |> range(start: -12h)
+  |> filter(fn: (r) =>
+    r._measurement == "system" and
+    r._field == "uptime"
+  )
+  |> sort(columns:["region", "host", "_value"])
+
+    Group by any column
+    from(bucket:"example-bucket")
+  |> range(start: -12h)
+  |> filter(fn: (r) => r._measurement == "system" and r._field == "uptime" )
+  |> group(columns:["host", "_value"])
+
+    Window by calendar months and years--calendar month and year duration units (1mo, 1y) and lets you window and aggregate data by calendar month and year.
+    from(bucket:"example-bucket")
+  |> range(start:-1y)
+  |> filter(fn: (r) => r._measurement == "mem" and r._field == "used_percent" )
+  |> aggregateWindow(every: 1mo, fn: mean)
+
+    Work with multiple data sources
+    DatePart-like queries
+    Pivot
+    Histograms
+    Covariance
+    Cast booleans to integers
+    String manipulation and data shaping
+    Work with geo-temporal data
+
