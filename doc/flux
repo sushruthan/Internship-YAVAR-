@@ -215,28 +215,9 @@ memUsagePercent =
       r._field == "used_percent"
     )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+----------------------------------------------------------------
 ..........Query data with Flux...........
-
+https://docs.influxdata.com/influxdb/v2.0/query-data/flux/#query-fields-and-tags
     data is defined as:
 
 data = from(bucket: "example-bucket")
@@ -246,8 +227,121 @@ data = from(bucket: "example-bucket")
     r._field == "example-field"
   )
 
+>>Query fields and tags
+
+Use the filter() function to query data based on fields, tags, or any other column value. filter() performs operations similar to the SELECT statement and the WHERE clause in InfluxQL and other SQL-like query languages.
+
+from(bucket: "example-bucket")
+  |> range(start: -1h)
+  |> filter(fn: (r) =>
+      r._measurement == "example-measurement" and
+      r._field == "example-field" and
+      r.tag == "example-tag"
+  )
+  >>Group
+
+Use the group() function to group data with common values in specific columns.
+
+data
+  |> group(columns: ["host"], mode: "by")
+ >>Sort and limit
+
+Use the sort()function to order records within each table by specific columns and the limit() function to limit the number of records in output tables to a fixed number, n.
+
+data
+  |> sort(columns: ["host", "_value"])
+  |> limit(n: 4)
+   
+>>>Window & aggregate
+
+data
+  |> aggregateWindow(every: 20m, fn: mean)
+   
+    
+ >>Explore your schema
+
+Flux provides functions that let you explore the structure and schema of your data stored in InfluxDB.
+
+import "influxdata/influxdb/schema"
+
+// List buckets
+buckets()
+
+// List measurements
+schema.measurements(bucket: "example-bucket")
+
+// List field keys
+schema.fieldKeys(bucket: "example-bucket")
+
+// List tag keys
+schema.tagKeys(bucket: "example-bucket")
+
+// List tag values
+schema.tagValues(bucket: "example-bucket", tag: "example-tag")  
     
     
+  >>Transform data with math
+
+Use the map() function to remap column values and apply mathematic operations.
+
+data
+  |> map(fn: (r) => ({ r with _value: r._value * r._value }))
+  
+   
+ >>Calculate percentages
+
+Use pivot() or join() and the map() function to align operand values into rows and calculate a percentage.
+
+data
+  |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
+  |> map(fn: (r) => ({
+    _time: r._time,
+    _field: "used_percent",
+    _value: float(v: r.used) / float(v: r.total) * 100.0
+  }))
+  
+  >>Moving Average
+
+Use the movingAverage() or timedMovingAverage() functions to return the moving average of data.
+
+data
+  |> movingAverage(n: 5)
+ 
+data
+  |> timedMovingAverage(every: 2m, period: 4m)
+
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    
    
    
