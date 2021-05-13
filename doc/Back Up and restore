@@ -1,0 +1,56 @@
+---https://docs.influxdata.com/influxdb/cloud/security/tokens/create-token/
+
+Back up data--https://docs.influxdata.com/influxdb/v2.0/reference/cli/influx/backup/
+
+#Usage
+
+$influx backup [flags] path
+
+##Back up all data to a directory
+
+$influx backup /path/to/backup/dir/
+
+##Back up all data to the current working directory
+
+$influx backup ./
+
+##Back up a specific bucket to a directory
+
+$influx backup --bucket example-bucket /path/to/backup/dir/
+
+************************************************************
+
+Restore data----https://docs.influxdata.com/influxdb/v2.0/backup-restore/restore/#recover-from-a-failed-restore
+
+Restore data with the influx CLI
+
+To restore all time series data from a backup directory, provide the following:
+
+    
+
+influx restore \
+  --input /backups/2020-01-20_12-00/backup directory path/
+
+To restore data from a specific backup bucket, provide the following:
+
+    backup directory path
+    bucket name or ID
+
+influx restore \
+  --input /backups/2020-01-20_12-00/ \
+  --bucket example-bucket
+
+# OR
+
+influx restore \
+  --input /backups/2020-01-20_12-00/ \
+  --bucket-id 000000000000
+  
+  To create new bucket
+  
+  influx restore \
+  --input /backups/2020-01-20_12-00/ \
+  --bucket example-bucket \
+  --new-bucket new-example-bucket
+  
+
