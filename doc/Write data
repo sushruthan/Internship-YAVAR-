@@ -1,0 +1,224 @@
+Write data to InfluxDB
+
+To write data into InfluxDB
+
+    organization – See View organizations for instructions on viewing your organization ID.
+    
+    bucket – See View buckets to viewing your bucket ID.
+    
+    authentication token 
+    
+    InfluxDB URL 
+    
+    
+    Use the influx query command
+
+Use the influx query command to query data in InfluxDB using Flux. Pass Flux queries to the command as either a file or via stdin.
+
+>>>>Run a query from a file
+
+$influx query --file /path/to/query.flux
+
+>>>>Pass raw Flux via stdin pipe
+
+influx query - # Return to open the pipe
+
+$data = from(bucket: "example-bucket") |> range(start: -10m) # ...
+# ctrl-d to close the pipe and submit the query
+
+
+The influx query command executes a literal Flux query provided as a string or a literal Flux query contained in a file.
+
+#Usage ---https://docs.influxdata.com/influxdb/v2.0/reference/cli/influx/query/
+
+$influx query [query literal] [flags]
+
+###sample data
+
+---------https://docs.influxdata.com/influxdb/v2.0/reference/sample-data/
+
+#####CSV annotation and how to write in influx
+
+https://docs.influxdata.com/influxdb/v2.0/write-data/developer-tools/csv/
+
+####in  Query builder
+
+import "experimental/csv"
+
+csv.from(url: "https://raw.githubusercontent.com/influxdata/influxdb2-sample-data/master/bird-migration-data/bird-migration.csv")
+  |> to(bucket:"sample")
+
+https://raw.githubusercontent.com/influxdata/influxdb2-sample-data/master/bird-migration-data/bird-migration.csv >>>>annotated link csv
+
+
+##############sample water data
+
+import "experimental/csv"
+
+relativeToNow = (tables=<-) =>
+  tables
+    |> elapsed()
+    |> sort(columns: ["_time"], desc: true)
+    |> cumulativeSum(columns: ["elapsed"])
+    |> map(fn: (r) => ({ r with _time: time(v: int(v: now()) - (r.elapsed * 1000000000))}))
+
+csv.from(url: "https://influx-testdata.s3.amazonaws.com/noaa.csv")
+  |> relativeToNow()
+  |> to(bucket: "noaa", org: "example-org")
+
+************************************************************************
+
+>>>Query and explore your data
+------https://docs.influxdata.com/influxdb/v2.0/query-data/
+
+>>>Process your data
+------https://docs.influxdata.com/influxdb/v2.0/process-data/
+	The purpose of tasks is to process or transform data in some way.
+	>Downsample data with InfluxDB
+	How to create a task that downsamples data much like continuous queries in previous versions of InfluxDB.
+_______
+// Task Options
+option task = {
+  name: "cq-mem-data-1w",
+  every: 1w,
+}
+
+// Defines a data source
+data = from(bucket: "system-data")
+  |> range(start: -duration(v: int(v: task.every) * 2))
+  |> filter(fn: (r) => r._measurement == "mem")
+
+data
+  // Windows and aggregates the data in to 1h averages
+  |> aggregateWindow(fn: mean, every: 1h)
+  // Stores the aggregated data in a new bucket
+  |> to(bucket: "system-data-downsampled", org: "my-org")
+______________
+
+	>Calculate a weekly mean
+	Calculate a weekly mean and add it to a new bucket.
+
+	>Convert results to JSON 
+-------https://docs.influxdata.com/influxdb/v2.0/process-data/common-tasks/
+	
+	
+>>>Monitor your data and send alerts
+------https://docs.influxdata.com/influxdb/v2.0/monitor-alert/
+
+
+Define a destination
+// ...
+|> to(bucket: "example-downsampled", org: "my-org")
+
+
+Full example task script
+
+// Task options
+option task = {
+    name: "cqinterval15m",
+    every: 1h,
+    offset: 0m,
+    concurrency: 1,
+}
+
+// Data source
+data = from(bucket: "example-bucket")
+  |> range(start: -task.every)
+  |> filter(fn: (r) =>
+    r._measurement == "mem" and
+    r.host == "myHost"
+  )
+
+data
+  // Data transformation
+  |> aggregateWindow(
+    every: 5m,
+    fn: mean
+  )
+  // Data destination
+  |> to(bucket: "example-downsampled")
+
+>>>Managing task using influx CLI
+https://docs.influxdata.com/influxdb/v2.0/process-data/manage-tasks/
+
+---Create a task using a file
+
+# Syntax
+influx task create --org <org-name>  -f </path/to/task-script>
+
+# Example
+influx task create --org my-org -f /tasks/cq-mean-1h.flux
+
+---Create a task using raw Flux
+
+influx task create --org my-org - # <return> to open stdin pipe
+
+option task = {
+  name: "task-name",
+  every: 6h
+}
+
+# ... Task script ...
+
+# <ctrl-d> to close the pipe and submit the command
+
+
+Task configuration options
+
+Task options define specific information about a task. They are set in a Flux script or in the InfluxDB user interface (UI). The following task options are available:
+
+    >name
+    >every
+    >cron-mentioned below 
+option task = {
+ // ...
+cron: "0 * * * *",
+}
+
+    # ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12)
+# │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+# │ │ │ │ │                                   7 is also Sunday on some systems)
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * * <command to execute>
+    >offset
+    >concurrency
+    
+    
+Manage your monitoring and alerting pipeline
+
+>Manage checks ---https://docs.influxdata.com/influxdb/v2.0/monitor-alert/checks/create/
+
+Parts of a check
+
+A check consists of two parts – a query and check configuration.
+Check query
+
+    Specifies the dataset to monitor.
+    May include tags to narrow results.
+
+Check configuration
+
+    Defines check properties, including the check interval and status message.
+    Evaluates specified conditions and applies a status (if applicable) to each data point:
+        crit
+        warn
+        info
+        ok
+    Stores status in the _level column.
+
+>Manage notification endpoints
+
+>Manage notification rules
+
+>Monitor with templates
+
+>Send alert email
+
+>Create custom checks
+
+Create custom checks with a Flux task.    
+
