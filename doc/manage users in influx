@@ -1,0 +1,55 @@
+Manage users
+
+#add member --https://docs.influxdata.com/influxdb/v2.0/organizations/members/
+--https://docs.influxdata.com/influxdb/v2.0/organizations/members/
+
+#Manage authentication tokens --https://docs.influxdata.com/influxdb/v2.0/security/tokens/
+
+>>Create a user using the influx CLI
+
+# Syntax
+$influx user create -n <username> -o <org-name>
+
+# Example
+$influx user create -n artemis -o demo
+$influx user password -n artemis 
+
+>>Create a user with a password and organization
+
+# Syntax
+$influx user create -n <username> -p <password> -o <org-name>
+
+
+*************************************************************************
+
+View users
+
+View users using the influx CLI
+
+$influx user list
+
+*********************************************************************
+
+Delete a user using the influx CLI
+
+# Syntax
+$influx user delete -i <user-id>
+
+# Example
+$influx user delete -i 0786ebbeab34e000
+
+********************************************************************
+
+Update a user using the influx CLI
+
+# Syntax
+$influx user update -i <user-id> -n <new-username>
+
+********************************************************************
+
+Change your password
+
+Change your password using the influx CLI
+
+# Syntax
+$influx user password -n <username>

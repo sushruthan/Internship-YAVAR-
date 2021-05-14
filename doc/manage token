@@ -1,0 +1,61 @@
+Manage authentication tokens
+
+--https://docs.influxdata.com/influxdb/v2.0/security/tokens/
+
+>>Operator token
+Grants full read and write access to all resources in all organizations in InfluxDB OSS 2.x.
+
+>>All-Access token
+Grants full read and write access to all resources in an organization.
+
+>>Read/Write token
+Grants read access, write access, or both to specific buckets in an organization.
+
+*********************************************************************
+Usage
+
+$influx auth create [flags]
+
+--https://docs.influxdata.com/influxdb/v2.0/reference/cli/influx/auth/create/
+*********************************************************************
+Create a token
+
+# Syntax
+$influx auth create -o <org-name> [permission-flags]
+
+# Example
+$influx auth create -o my-org \
+  --read-bucket 03a2bbf46309a000 \
+  --read-bucket 3a87c03ace269000 \
+  --read-dashboards \
+  --read-tasks \
+  --read-telegrafs \
+  --read-user
+  
+********************************************************************
+
+View tokens
+
+$influx auth list
+
+*******************************************************************
+
+Update a token
+
+can only be done in ui
+
+*******************************************************************
+
+Delete a token
+
+Delete tokens using the influx CLI
+
+This command requires an auth ID, which is available in the output of 
+$influx auth find
+
+# Syntax
+influx auth delete -i <auth-id>
+
+# Example
+influx auth delete -i 03a2bee5a9c9a000
+
