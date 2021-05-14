@@ -1,0 +1,31 @@
+	from(bucket:"syslog")
+    	  |> range(start: -15m)
+|> filter(fn: (r) =>
+    r._measurement == "syslog" and
+    r._field == "message" and
+    r.severity == "warning"
+  )
+from(bucket:"syslog")
+    	  |> range(start: -15m)
+|> filter(fn: (r) =>
+   // r._measurement == "syslog" and
+   // r._field == "message" and
+    r.severity == "info"
+
+  )
+|> map(fn: (r) => ({ r with severity2: r.severity == "warning" }))
+|> filter(fn: (r) =>
+   // r._measurement == "syslog" and
+   // r._field == "message" and
+    r.severity2 == false
+    
+  )
+|> map(fn: (r) => ({
+    r with
+    severity3:
+      if r.severity == "info" then "nothing"
+      else "normal"
+    })
+  )
+
+
