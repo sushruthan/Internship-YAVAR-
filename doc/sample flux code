@@ -1,0 +1,7 @@
+	from(bucket:"syslog")
+    	  |> range(start: -15m)
+|> filter(fn: (r) =>
+    r._measurement == "syslog" and
+    r._field == "message" and
+    r.severity == "warning"
+  )
