@@ -10,7 +10,7 @@ type ran struct {
 }
 
 var ranConfig = `
-  ## Set the amplitude
+  ## Set the value
   value = 10.0
 `
 
@@ -45,7 +45,6 @@ func init() {
 }
 
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 
