@@ -1,0 +1,5 @@
+sush@sush-HP-Pavilion-Notebook:~/my_project/golang/src/telegraf$ make telegraf
+
+go build -ldflags " -X main.commit=6977121a -X main.branch=master -X main.goos=linux -X main.goarch=amd64" ./cmd/telegraf
+
+sush@sush-HP-Pavilion-Notebook:~/my_project/golang/src/telegraf$ telegraf -sample-config -input-filter randnumber -output-filter influxdb >> tesush@sush-HP-Pavilion-Notebook:~/my_project/golang/src/telegraf$ 
