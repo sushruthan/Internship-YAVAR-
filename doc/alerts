@@ -1,0 +1,11 @@
+influxdb oss > alerts> create checks>create notification end points> create notification rule
+
+checks
+-set it as deadman check(executes when the selected program doesnt run) or threshold check(based on data)
+-filter based on query and set flag conditions
+
+notification endpoints
+-set http/slack api
+
+notification rule
+-set when the rule should execute ex: if condition

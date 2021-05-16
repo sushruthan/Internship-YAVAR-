@@ -1,0 +1,41 @@
+import "strings"
+import "regexp"
+import "influxdata/influxdb/monitor"
+import "influxdata/influxdb/schema"
+
+option task = {name: "Failed Tasks Check", every: 1h, offset: 4m}
+
+task_data = from(bucket: "_tasks")
+	|> range(start: -task.every)
+	|> filter(fn: (r) =>
+		(r["_measurement"] == "runs"))
+	|> filter(fn: (r) =>
+		(r["_field"] == "logs"))
+	|> map(fn: (r) => ({ r with name: strings.split(v: regexp.findString(r: /option task = \{([^\}]+)/, v: r._value), t: "\\\\\\\"")[1] }))
+	|> drop(columns: ["_value", "_start", "_stop"])
+	|> group(columns: ["name", "taskID", "status", "_measurement"])
+	|> map(fn: (r) =>
+		({r with _value: if r.status == "failed" then 1 else 0}))
+	|> last()
+check = {
+	_check_id: "0000000000000001",      // 16 characters, alphanumeric
+	_check_name: "Failed Tasks Check",  // string
+	_type: "custom",                    // can also use "threshold" or "deadman"
+	tags: {},
+}
+ok = (r) =>
+	(r["logs"] == 0)
+crit = (r) =>
+	(r["logs"] == 1)
+messageFn = (r) =>
+	("The task: ${r.taskID} - ${r.name} has a status of ${r.status}")
+
+task_data
+	|> schema["fieldsAsCols"]()
+	|> monitor["check"](
+		data: check,
+		messageFn: messageFn,
+		ok: ok,
+		crit: crit,
+	)
+
