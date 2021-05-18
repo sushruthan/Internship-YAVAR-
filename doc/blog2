@@ -1,0 +1,113 @@
+How to install golang, vscode and set environment variables in linux
+
+How to install Golang and set up GOPATH
+
+1.Download Go binary
+
+download go binary from official website
+
+--https://golang.org/dl/
+
+2.Extracting the download file and set up Go tree
+
+Run the following command to remove previous installation at /usr/local/go, if any. Also back up any data before, if needed.
+(run the command in root)
+
+$sudo -i   ~to enter root
+
+$rm -rf /usr/local/go 
+
+Extract the archive you downloaded into /usr/local and create a Go tree in /usr/local/go by run the following code in root or using sudo  
+
+$sudo tar -C /usr/local -xzf go1.16.4.linux-amd64.tar.gz
+
+All the binaries are extracted to /home/usr/local directory.
+
+You can verify the files in the /home/usr/local directory by running the command
+
+$cd /home/usr/local
+
+3.Create workspace in go
+
+
+A workspace in Go will typically contain three folders:
+
+    src – Contains Go source code files resides (includes 3rd party fetched packages)
+    bin – Hosts all the command binaries generated as result of compilation
+    pkg – Lists all package objects created from source files
+    
+create a folder with bin,pkg and src.
+
+$mkdir myproject
+
+$cd /myproject/
+
+$mkdir bin pkg src 
+
+$pwd  (to see the path)
+
+
+4.set up PATH variable and GOPATH 
+
+Run the command to temprorialy setup path variable
+
+$export PATH=$PATH:/usr/local/go/bin
+
+To verify the installation run the following command
+
+$ go version
+
+
+Set path and gopath globaly
+
+To Set the environment variables to your shell path save the path in /.profile file or /.bashrc file.
+
+$sudo nano $HOME/.profile # or $HOME/.bashrc
+
+save the below line at end of the file.
+
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=/home/sush/myproject
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+
+
+Note: Changes made to a profile file may not apply until the next time you log into your computer. To apply the changes immediately, just run the shell commands 
+
+$source $HOME/.profile
+
+in case of basrc, restart the terminal
+
+
+
+
+
+
+bash_profile is executed for login shells, while . bashrc is executed for interactive non-login shells. When you login (type username and password) via console, either sitting at the machine, or remotely via ssh: . bash_profile is executed to configure your shell before the initial command prompt.
+
+
+
+
+>>How to install Visual studio code
+
+1.install vscode using snap store
+
+$sudo snap install --classic code # or code-insiders
+
+Note: If snap isn't available in your Linux distribution the above command will download snap core,if not please check the following Installing snapd guide --https://docs.snapcraft.io/installing-snapd, which can help you get that set up.
+
+2.Install by donloading binary
+
+Download the binary for the linux distribution and install using software installer.
+--https://code.visualstudio.com/download
+
+3.For distributions other than Ubuntu --https://code.visualstudio.com/docs/setup/linux, follow the instructions in the official set up website
+
+3.setting workpace
+select the workspace folder in select directory
+
+>>setting up Golang workspace in vscode
+ 
+Search go in extention and install go-extention
+
+
