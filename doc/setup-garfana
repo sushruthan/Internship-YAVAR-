@@ -1,0 +1,39 @@
+Step 1: Install Grafana
+
+
+--https://grafana.com/docs/grafana/latest/installation/debian/
+--https://grafana.com/grafana/download
+--https://devconnected.com/how-to-install-grafana-on-ubuntu-20-04/
+
+--https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-grafana-on-ubuntu-18-04
+
+
+>>>First of all, you need to add the Grafana APT repositories in order to be able to install packages from them.
+First, install packages that are needed for Grafana to run properly : apt-transport and software-properties-common.
+
+$ sudo apt-get install -y apt-transport-https
+$ sudo apt-get install -y software-properties-common wget
+
+In order to retrieve Grafana packages in a secure way, you need to add the GPG key to your trusted set of keys.
+
+To achieve that, you need to use the “apt-key“ command.
+
+$ wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+
+Add the trusted Grafana repositories
+
+Now that everything is configured, you can add the Grafana repositories to the custom APT repositories of your server.
+
+$ echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+$ deb https://packages.grafana.com/oss/deb stable main
+
+$ sudo apt-get install grafana
+
+
+
+Step 2: Log in
+
+localhost:3000/
+
+
