@@ -1,0 +1,14 @@
+Back up
+
+$ influx backup -o demo -t **h -b sample-testing /home/sush/backup
+
+
+restore specific bucket
+
+$ influx backup --bucket sample-testing /home/sush/backup -o demo -t ****h
+
+set up using cli
+
+$ influx setup -h
+
+$ influx user create -n <username> -o <org-name>
