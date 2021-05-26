@@ -1,0 +1,53 @@
+One of the most important user management tasks is assigning roles, which govern what permissions a user has.
+
+>>Server
+
+The highest and broadest level of user group in Grafana is the server. Every user with an account in a Grafana instance is a member of the server group.
+
+Grafana Server Admins are user accounts that have the Grafana Admin option set to Yes. They can manage individual user accounts and organizations on their server.
+
+Server Admins can:
+
+    Manage users
+    Manage organizations
+
+>>Organization
+
+Organizations are groups of users on a server. Users can belong to one or more organizations, but each user must belong to at least one organization.
+
+Data sources, plugins, and dashboards are associated with organizations. This means that you can have a server with two organizations, one with a Prometheus data source and another with an InfluxDB data source. Each organization has separate data and dashboards.
+
+Members of organizations have permissions based on their role in the organization. For more information, refer to Organization roles.
+
+Organization Admins are user accounts that are assigned the Admin role for an organization. They can manage their users and teams in their organization.
+
+Organization Admins can:
+
+    Manage users
+    Manage teams
+
+>>Teams
+
+Teams are groups of users within the same organization. Teams allow you to grant permissions for a group of users. They are most often used to manage permissions for folders and dashboards. Enterprise users can use them to apply data source permissions.
+
+Teams are mostly managed by Organization Admins. However, if the Grafana server setting editors_can_admin is applied, then users who are assigned the Team Admin role can also manage teams in their organization and users assigned to their teams.
+
+--https://grafana.com/docs/grafana/latest/permissions/organization_roles/
+
+--organization rules
+
+Team Admins can Manage teams.
+
+
+>>Users
+
+Users are named accounts in Grafana with granted permissions to access resources throughout Grafana. All users can manage their own accounts to a limited extent.
+
+Users can:
+
+    View and edit user profile
+    Change password
+    Switch organizations
+
+
+
