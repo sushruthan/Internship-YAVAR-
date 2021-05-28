@@ -1,0 +1,33 @@
+import "experimental/geo"
+import "experimental/csv"
+
+sampleGeoData = csv.from(
+  url: "https://raw.githubusercontent.com/influxdata/influxdb2-sample-data/master/bird-migration-data/bird-migration.csv"
+)
+
+sampleGeoData
+  |> geo.filterRows(
+    region: {lat: 30.04, lon: 31.23, radius: 200.0},
+    strict: true
+  )
+  
+  
+ current time spot 
+  
+import "experimental/csv"
+
+csv.from(url: "https://raw.githubusercontent.com/influxdata/influxdb2-sample-data/master/bird-migration-data/bird-migration.csv")
+|> to(bucket: "sampledata-csv")
+
+import "experimental/csv"
+
+relativeToNow = (tables=<-) =>
+  tables
+    |> elapsed()
+    |> sort(columns: ["_time"], desc: true)
+    |> cumulativeSum(columns: ["elapsed"])
+    |> map(fn: (r) => ({ r with _time: time(v: int(v: now()) - (r.elapsed * 1000000000))}))
+    
+csv.from(url: "https://raw.githubusercontent.com/influxdata/influxdb2-sample-data/master/bird-migration-data/bird-migration.csv")
+  |> relativeToNow()
+  |> to(bucket: "sampledata-csv", org: "demo")
