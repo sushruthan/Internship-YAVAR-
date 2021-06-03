@@ -1,0 +1,9 @@
+1. Install the Panel
+
+Use the grafana-cli tool to install Hexmap from the commandline:
+
+grafana-cli plugins install marcusolsson-hexmap-panel
+
+2.$sudo service grafana-server restart
+
+/var/lib/grafana/plugins
