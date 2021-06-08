@@ -1,0 +1,5 @@
+https://community.grafana.com/t/cant-access-grafana-web-interface-trought-port-3000/16661/3
+curl -vL http://192.168.164.30:3000/login
+
+
+https://docs.digitalocean.com/products/billing/
