@@ -1,0 +1,23 @@
+github reference--https://github.com/techarkit/shell-scripting-tutorial
+
+#! /usr/bin/bash
+
+echo "what is your name"
+read name
+if [ $name ]; then
+	echo "$name sounds alright"
+else
+	echo "wow, sounds like a punk"
+fi
+#echo $(ifconfig)
+#echo $(whoami)
+
+ifconfig | grep broadcast | awk '{print $2}'
+
+alias ipaddress="echo = $(ifconfig | grep broadcast | awk '{print $2}')"
+
+To remove permanent alias we must delete the appropriate entry in the ~/. bash_aliases file. As mentioned before we can use unalias command to remove an alias, but that applies only to current session and if we open new terminal (or logging in via ssh) our permanent aliases will be still available.
+
+ssh automation--https://www.youtube.com/watch?v=Vt5S12U3F0k
+
+network reconisance--https://www.youtube.com/watch?v=keK99avGLvQ
