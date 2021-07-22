@@ -1,0 +1,37 @@
+set up smtp in gmail --https://support.google.com/mail/answer/7126229?visit_id=637588484180338917-1820317725&hl=en-GB&rd=1
+
+--https://www.youtube.com/watch?v=D-NYmDWiFjU
+
+Turn on Less secure app access
+
+----------------------------------------------------------
+setup grafana.ini 
+
+linux path for grafana.ini /etc/grafana/grafana.ini
+
+in smtp setting uncomment and remove the following line
+
+enabled = true
+host = smtp.gmail.com:465
+user = test@gmail.com
+# If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
+password = ***************
+;cert_file =
+;key_file =
+skip_verify = true
+from_address = parzival.testing@gmail.com
+;from_address = admin@grafana.localhost
+from_name = Grafana
+# EHLO identity in SMTP dialog (defaults to instance_name)
+;ehlo_identity = dashboard.example.com
+# SMTP startTLS policy (defaults to 'OpportunisticStartTLS')
+;startTLS_policy = NoStartTLS
+
+----------------------------------------------------------
+
+set up gmail alert channel(smtp configuration) --https://thriftly.io/docs/components/Thriftly-Deployment-Beyond-the-Basics/Metrics-Prometheus/Creating-Receiving-Email-Alerts.html
+
+*****setup and test gmail smtp and create grafana alert --https://techexpert.tips/grafana/grafana-email-notification-setup/
+
+
+--https://kinsta.com/blog/gmail-smtp-server/

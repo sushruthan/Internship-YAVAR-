@@ -1,0 +1,121 @@
+setting up loki and promtail
+
+--https://computingforgeeks.com/forward-logs-to-grafana-loki-using-promtail/
+
+***************Loki********************
+--https://grafana.com/docs/loki/latest/overview/
+--https://grpc.io/
+--https://www.consul.io/
+--https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf
+
+If an ingester process crashes or exits abruptly, all the data that has not yet been flushed will be lost. Loki is usually configured to replicate multiple replicas (usually 3) of each log to mitigate this risk.
+
+Timestamp Order
+
+    If the incoming line exactly matches the previously received line (matching both the previous timestamp and log text), the incoming line will be treated as an exact duplicate and ignored.
+
+    If the incoming line has the same timestamp as the previous line but different content, the log line is accepted. This means it is possible to have two different log lines for the same timestamp.
+-------------------------------------------------------------
+Promtail’s use case is specifically tailored to Loki. Its main mode of operation is to discover log files stored on disk and forward them associated with a set of labels to Loki.
+
+Example loki config file
+
+Now let’s expand the example a little:
+
+scrape_configs:
+ - job_name: system
+   pipeline_stages:
+   static_configs:
+   - targets:
+      - localhost
+     labels:
+      job: syslog
+      __path__: /var/log/syslog
+ - job_name: system
+   pipeline_stages:
+   static_configs:
+   - targets:
+      - localhost
+     labels:
+      job: apache
+      __path__: /var/log/apache.log
+
+Loki cli to configure and query from loki
+--https://grafana.com/docs/loki/latest/getting-started/logcli/
+
+config promtail
+To limit what is sent to Grafana Cloud and potentially reduce spending as a result, you can drop log lines in Promtail before sending them to Loki. This is especially useful for expensive or unnecessary logs or to drop lines that are too long.
+
+To do this, create a section in the Promtail config.yaml that uses a regex in Go syntax matching what you want dropped.
+
+For example, here is the same configuration file used above, but with a new section at the bottom, pipeline_stages: that will drop lines from /var/log/test.log that are longer than 501 characters.
+
+server:
+  http_listen_port: 0
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+client:
+  url: https://<User>:<Your Grafana.com API Key>@logs-prod-us-central1.grafana.net/api/prom/push
+
+scrape_configs:
+- job_name: system
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/*.log
+  pipeline_stages:
+    - match:
+        selector: '{filename="/var/log/test.log"} |~ ".{501}"'
+        action: drop
+
+
+***************Loki Cheat sheet***********************
+--https://megamorf.gitlab.io/cheat-sheets/loki/
+
+A basic LogQL query consists of two parts: the log stream selector and a filter expression. Due to Loki’s design, all LogQL queries are required to contain a log stream selector.
+
+>>log stream selector
+
+The log stream selector is written by wrapping the key-value pairs in a pair of curly braces:
+
+{app="mysql",name="mysql-backup"}
+
+In this example, log streams that have a label of app whose value is mysql and a label of name whose value is mysql-backup will be included in the query results.
+
+The following label matching operators are supported:
+
+    =: exactly equal.
+    !=: not equal.
+    =~: regex matches.
+    !~: regex does not match.
+
+Examples:
+
+{name=~"mysql.+"}
+{name!~"mysql.+"}
+
+
+>>Filter Expression
+
+After writing the log stream selector, the resulting set of logs can be filtered further with a search expression. The search expression can be just text or regex:
+
+    {job="mysql"} |= "error"
+    {name="kafka"} |~ "tsdb-ops.*io:2003"
+    {instance=~"kafka-[23]",name="kafka"} != kafka.server:type=ReplicaManager
+
+In the previous examples, |=, |~, and != act as filter operators and the following filter operators are supported:
+
+    |=: Log line contains string.
+    !=: Log line does not contain string.
+    |~: Log line matches regular expression.
+    !~: Log line does not match regular expression.
+
+Filter operators can be chained and will sequentially filter down the expression - resulting log lines must satisfy every filter:
+
+{job="mysql"} |= "error" != "timeout"
+

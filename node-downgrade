@@ -1,0 +1,12 @@
+Step 1
+--https://computingforgeeks.com/install-node-js-14-on-ubuntu-debian-linux/
+
+Step 2
+--https://stackoverflow.com/questions/47008159/how-to-downgrade-node-version
+
+
+npm peer dependencies
+--https://stackoverflow.com/questions/46053414/npm-warn-requires-a-peer-of-but-none-is-installed-you-must-install-peer
+
+Yarn install
+--https://linuxize.com/post/how-to-install-yarn-on-ubuntu-20-04/

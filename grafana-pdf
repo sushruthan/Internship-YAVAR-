@@ -1,0 +1,13 @@
+$ sudo apt install texlive-latex-base
+
+$ go get github.com/IzakMarais/reporter/...
+
+$ go install -v github.com/IzakMarais/reporter/cmd/grafana-reporter
+go install: version is required when current directory is not in a module
+Try 'go install github.com/IzakMarais/reporter/cmd/grafana-reporter@latest' to install the latest version
+	
+$ go install github.com/IzakMarais/reporter/cmd/grafana-reporter@latest	
+	
+$ grafana-reporter
+	
+http://localhost:8686/api/v5/report/gdS9xqqMz?apitoken=xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,63 @@
+github reference--https://github.com/techarkit/shell-scripting-tutorial
+$which bash
+
+#! /usr/bin/bash
+
+echo "what is your name"
+read name
+if [ $name ]; then
+	echo "$name sounds alright"
+else
+	echo "wow, sounds like a punk"
+fi
+#echo $(ifconfig)
+#echo $(whoami)
+
+ifconfig | grep broadcast | awk '{print $2}'
+
+alias ipaddress="echo = $(ifconfig | grep broadcast | awk '{print $2}')"
+
+To remove permanent alias we must delete the appropriate entry in the ~/. bash_aliases file. As mentioned before we can use unalias command to remove an alias, but that applies only to current session and if we open new terminal (or logging in via ssh) our permanent aliases will be still available.
+
+------------------------------------------------------------------
+ssh automation--https://www.youtube.com/watch?v=Vt5S12U3F0k
+except script
+
+
+
+-------------------------------------------------------------
+network reconisance--https://www.youtube.com/watch?v=keK99avGLvQ
+--https://null-byte.wonderhowto.com/how-to/write-your-own-bash-script-automate-recon-0302808/
+
+chmod +x recon.sh 
+
+#!/usr/bin/bash
+
+if [ -z "$1" ]; then
+	echo "Usage: ./recon.sh <ip>"
+	exit 1
+fi
+
+printf "\n---- NMAP ----\n\n" > results
+
+echo "Running Nmap..."
+nmap $1 | tail -n +5 | head -n -3 >>results
+#cat results
+
+while read line
+do
+	if [[ $line == *open* ]] && [[ $line == *http* ]]; then
+	echo "Running WhatWeb..."
+	whatweb $1 -v > temp
+	fi
+done < results
+
+if [ -e temp ]; then
+	printf "\n---- WEB ----\n\n" >> results
+	cat temp >> results
+	rm temp
+fi
+
+cat results
+
+---------------------------------------------------------------
