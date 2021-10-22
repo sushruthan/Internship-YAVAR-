@@ -1,0 +1,2697 @@
+{
+  "__inputs": [],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.1.2"
+    },
+    {
+      "type": "panel",
+      "id": "grafana-worldmap-panel",
+      "name": "Worldmap Panel",
+      "version": "0.3.2"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph (old)",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "logs",
+      "name": "Logs",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "snapshotData": [],
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 55,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 40
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "links": [],
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "limit": 4,
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {
+          "titleSize": 15,
+          "valueSize": 12
+        }
+      },
+      "pluginVersion": "8.1.2",
+      "repeat": null,
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 40
+                    }
+                  ]
+                },
+                "unit": "celsius"
+              },
+              "name": "_time",
+              "type": "time",
+              "values": [
+                1629383174689
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "max": 55,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 40
+                    }
+                  ]
+                },
+                "unit": "celsius"
+              },
+              "labels": {},
+              "name": "Chennai",
+              "type": "number",
+              "values": [
+                35.91
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "max": 55,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 40
+                    }
+                  ]
+                },
+                "unit": "celsius"
+              },
+              "labels": {},
+              "name": "Amsterdam",
+              "type": "number",
+              "values": [
+                29.83
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temp\")\n  |> highestCurrent(n:2, groupColumns: [\"loc\"])\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> rename(fn : (column) =>  strings.title(v: column))"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Ø Temperature",
+      "type": "gauge"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 11,
+      "links": [],
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "limit": 4,
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {
+          "titleSize": 15,
+          "valueSize": 12
+        }
+      },
+      "pluginVersion": "8.1.2",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 70
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "name": "_time",
+              "type": "time",
+              "values": [
+                1629383174689
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 70
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Chennai",
+              "type": "number",
+              "values": [
+                57.76
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 70
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "London",
+              "type": "number",
+              "values": [
+                43.47
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"hum\")\n  |> highestCurrent(n:2, groupColumns: [\"loc\"])\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> rename(fn : (column) =>  strings.title(v: column))"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Ø Humidity",
+      "type": "gauge"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 12,
+        "y": 0
+      },
+      "id": 20,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 15,
+          "valueSize": 20
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.1.2",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": " Times",
+              "type": "time",
+              "values": [
+                1629382285000,
+                1629382285000,
+                1629382285000
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": "Total Racks",
+              "type": "number",
+              "values": [
+                5,
+                4,
+                10
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"regexp\"\nimport \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"racks\" and r[\"_field\"]==\"total_rack\")\n  |> unique(column: \"loc\")\n  |> aggregateWindow(every: 5s, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"loc\",\"longitude\",\"_measurement\",\"latitude\",\"name\"])\n  |> rename(fn: (column) => strings.title(v:regexp.replaceAllString(r: /_/, v: column, t: \" \") + \"s\"))\n  |> yield(name: \"last\")"
+          },
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 6
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 15,
+        "y": 0
+      },
+      "id": 19,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 15,
+          "valueSize": 20
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.1.2",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 6
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": " Times",
+              "type": "time",
+              "values": [
+                1629383175000,
+                1629383175000,
+                1629383175000
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 6
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": "Free Racks",
+              "type": "number",
+              "values": [
+                2,
+                4,
+                0
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"regexp\"\nimport \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"racks\" and r[\"_field\"]==\"free_rack\")\n  |> aggregateWindow(every: 5s, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"loc\",\"_measurement\"])\n  |> top(n:3, columns: [\"_time\",\"name\"])\n  |> rename(fn: (column) => strings.title(v:regexp.replaceAllString(r: /_/, v: column, t: \" \"))+\"s\")\n  |> yield(name: \"last\")"
+          },
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 18,
+        "y": 0
+      },
+      "id": 22,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.1.2",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": " Time",
+              "type": "time",
+              "values": [
+                1629382285000,
+                1629382285000,
+                1629382285000
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": "Total Rack Units",
+              "type": "number",
+              "values": [
+                200,
+                44,
+                400
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"regexp\"\nimport \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"racks\" and r[\"_field\"]==\"total_rack_units\")\n  |> unique(column: \"loc\")\n  |> aggregateWindow(every: 5s, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"loc\",\"longitude\",\"_measurement\",\"latitude\",\"name\"])\n  |> rename(fn: (column) => strings.title(v:regexp.replaceAllString(r: /_/, v: column, t: \" \")))\n  |> yield(name: \"last\")"
+          },
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "blue",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 21,
+        "y": 0
+      },
+      "id": 21,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 15,
+          "valueSize": 20
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.1.2",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 50
+                    },
+                    {
+                      "color": "blue",
+                      "value": 100
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": " Time",
+              "type": "time",
+              "values": [
+                1629383175000,
+                1629383175000,
+                1629383175000
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 50
+                    },
+                    {
+                      "color": "blue",
+                      "value": 100
+                    }
+                  ]
+                }
+              },
+              "labels": {},
+              "name": "Free Rack Units",
+              "type": "number",
+              "values": [
+                80,
+                160,
+                0
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"regexp\"\nimport \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"racks\" and r[\"_field\"]==\"free_rack_units\")\n  |> aggregateWindow(every: 5s, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"loc\",\"_measurement\"])\n  |> top(n:3, columns: [\"_time\",\"name\"])\n  |> rename(fn: (column) => strings.title(v:regexp.replaceAllString(r: /_/, v: column, t: \" \")))\n  |> yield(name: \"last\")"
+          },
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "circleMaxSize": "4",
+      "circleMinSize": "4",
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "#73BF69",
+        "#5794F2"
+      ],
+      "datasource": null,
+      "decimals": 0,
+      "esGeoPoint": "goehash",
+      "esLocationName": "geohash",
+      "esMetric": "_value",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 2
+      },
+      "hideEmpty": false,
+      "hideTimeOverride": true,
+      "hideZero": false,
+      "id": 2,
+      "initialZoom": "1",
+      "jsonUrl": "",
+      "links": [],
+      "locationData": "table",
+      "mapCenter": "Europe",
+      "mapCenterLatitude": 46,
+      "mapCenterLongitude": 14,
+      "maxDataPoints": null,
+      "mouseWheelZoom": false,
+      "pluginVersion": "8.0.6",
+      "showLegend": true,
+      "snapshotData": [
+        {
+          "columns": [
+            {
+              "text": "_time"
+            },
+            {
+              "text": "free_rack"
+            },
+            {
+              "text": "metric"
+            },
+            {
+              "text": "latitude"
+            },
+            {
+              "text": "longitude"
+            },
+            {
+              "text": "name"
+            },
+            {
+              "text": "total_rack"
+            },
+            {
+              "text": "total_rack_units"
+            }
+          ],
+          "meta": {
+            "executedQueryString": "from(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"racks\")\n  |> aggregateWindow(every: 1s, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"loc\"])\n  |> rename(columns:{free_rack_units:\"metric\"})\n  |> top(n:3, columns: [\"_time\",\"name\"])\n  |> yield(name: \"last\")"
+          },
+          "refId": "A",
+          "rows": [
+            [
+              1629383175000,
+              4,
+              160,
+              51.509865,
+              -0.118092,
+              "london",
+              10,
+              400
+            ],
+            [
+              1629383175000,
+              0,
+              0,
+              13.083666332,
+              80.268665592,
+              "chennai",
+              4,
+              44
+            ],
+            [
+              1629383175000,
+              2,
+              80,
+              52.377956,
+              4.89707,
+              "amsterdam",
+              5,
+              200
+            ]
+          ],
+          "type": "table"
+        }
+      ],
+      "stickyLabels": false,
+      "tableQueryOptions": {
+        "geohashField": "geohash",
+        "labelField": "name",
+        "latitudeField": "latitude",
+        "longitudeField": "longitude",
+        "metricField": "metric",
+        "queryType": "coordinates"
+      },
+      "thresholds": "30,80,160",
+      "timeFrom": null,
+      "title": "Map",
+      "type": "grafana-worldmap-panel",
+      "unitPlural": "",
+      "unitSingle": "",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      },
+      "hiddenSeries": false,
+      "hideTimeOverride": false,
+      "id": 8,
+      "interval": "10s",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxDataPoints": 10,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.1.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "seriesOverrides": [],
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "unit": "celsius"
+              },
+              "name": "_time",
+              "type": "time",
+              "values": [
+                1629382890000,
+                1629382920000,
+                1629382950000,
+                1629382980000,
+                1629383010000,
+                1629383040000,
+                1629383070000,
+                1629383100000,
+                1629383130000,
+                1629383160000,
+                1629383178861
+              ]
+            },
+            {
+              "config": {
+                "unit": "celsius"
+              },
+              "labels": {},
+              "name": "Amsterdam",
+              "type": "number",
+              "values": [
+                29.15,
+                29.29,
+                29.27,
+                29.33,
+                29.6,
+                29.5,
+                29.49,
+                29.73,
+                29.44,
+                29.74,
+                29.83
+              ]
+            },
+            {
+              "config": {
+                "unit": "celsius"
+              },
+              "labels": {},
+              "name": "Chennai",
+              "type": "number",
+              "values": [
+                35.95,
+                35.88,
+                36.18,
+                35.89,
+                35.83,
+                35.88,
+                35.67,
+                35.85,
+                35.82,
+                35.7,
+                35.91
+              ]
+            },
+            {
+              "config": {
+                "unit": "celsius"
+              },
+              "labels": {},
+              "name": "London",
+              "type": "number",
+              "values": [
+                18.51,
+                18.25,
+                17.88,
+                18.35,
+                18.27,
+                18.24,
+                17.99,
+                17.84,
+                17.78,
+                18,
+                17.82
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:21:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temp\" )\n  |> aggregateWindow(every: 30s, fn: last, createEmpty: false)\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\"])\n  |> rename(fn : (column) =>  strings.title(v: column))\n  |> yield(name: \"last\")\n\n\n"
+          },
+          "name": "temp",
+          "refId": "A"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "thresholds": [],
+      "timeFrom": "5m",
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Temperature",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:359",
+          "format": "celsius",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:360",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 4
+      },
+      "hiddenSeries": false,
+      "hideTimeOverride": false,
+      "id": 10,
+      "interval": "10s",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxDataPoints": 10,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.1.2",
+      "pointradius": 0.5,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "seriesOverrides": [],
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "name": "_time",
+              "type": "time",
+              "values": [
+                1629382890000,
+                1629382920000,
+                1629382950000,
+                1629382980000,
+                1629383010000,
+                1629383040000,
+                1629383070000,
+                1629383100000,
+                1629383130000,
+                1629383160000,
+                1629383178971
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Amsterdam",
+              "type": "number",
+              "values": [
+                38.12,
+                37.75,
+                38.04,
+                37.78,
+                37.81,
+                37.59,
+                37.84,
+                37.71,
+                37.68,
+                37.87,
+                38.06
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Chennai",
+              "type": "number",
+              "values": [
+                58.46,
+                58.41,
+                58.23,
+                58.1,
+                57.86,
+                57.84,
+                57.78,
+                58.05,
+                57.98,
+                57.85,
+                57.76
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "London",
+              "type": "number",
+              "values": [
+                43.86,
+                43.66,
+                43.57,
+                43.66,
+                43.71,
+                43.32,
+                43.51,
+                43.28,
+                43.43,
+                43.09,
+                43.47
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:21:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"hum\" )\n  |> aggregateWindow(every: 30s, fn: last, createEmpty: false)\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\"])\n  |> rename(fn : (column) =>  strings.title(v: column))\n\n"
+          },
+          "name": "hum",
+          "refId": "A"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "thresholds": [],
+      "timeFrom": "5m",
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Humidity",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:302",
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:303",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 4,
+      "links": [],
+      "options": {
+        "displayMode": "lcd",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": false,
+        "text": {}
+      },
+      "pluginVersion": "8.1.2",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "name": "_time",
+              "type": "time",
+              "values": [
+                1629383175000
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "labels": {
+                "Loc": "amsterdam"
+              },
+              "type": "number",
+              "values": [
+                80
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"racks\" and r[\"_field\"]==\"free_rack_units\")\n  |> aggregateWindow(every: 1s, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> rename(columns:{free_rack_units:\"\"})\n  |> top(n:1, columns: [\"_time\",\"name\"])\n  |> rename(fn : (column) =>  strings.title(v: column))\n  |> yield(name: \"last\")"
+          },
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "name": "_time",
+              "type": "time",
+              "values": [
+                1629383175000
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "labels": {
+                "Loc": "chennai"
+              },
+              "type": "number",
+              "values": [
+                0
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "name": "_time",
+              "type": "time",
+              "values": [
+                1629383175000
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "labels": {
+                "Loc": "london"
+              },
+              "type": "number",
+              "values": [
+                160
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Free Rack Units",
+      "transformations": [],
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 12,
+        "y": 11
+      },
+      "hiddenSeries": false,
+      "hideTimeOverride": false,
+      "id": 17,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.1.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Rack _time",
+              "type": "time",
+              "values": [
+                1629383124600,
+                1629383134600,
+                1629383144600,
+                1629383154700,
+                1629383164700,
+                1629383174700
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Rack 1",
+              "type": "number",
+              "values": [
+                32.5,
+                30.1,
+                29,
+                31.4,
+                32.6,
+                31.4
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Rack 2",
+              "type": "number",
+              "values": [
+                37.9,
+                39.2,
+                37.2,
+                34.9,
+                37,
+                37.2
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Rack 3",
+              "type": "number",
+              "values": [
+                40.5,
+                40.6,
+                40.3,
+                42.3,
+                43.3,
+                41.9
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Rack 4",
+              "type": "number",
+              "values": [
+                64.4,
+                64.2,
+                63.1,
+                63,
+                64.8,
+                64.6
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Rack 5",
+              "type": "number",
+              "values": [
+                81.1,
+                82.4,
+                83.7,
+                81.3,
+                80.6,
+                79.2
+              ]
+            },
+            {
+              "config": {
+                "unit": "percent"
+              },
+              "labels": {},
+              "name": "Rack 6",
+              "type": "number",
+              "values": [
+                40.5,
+                40,
+                38.5,
+                37.5,
+                38.6,
+                36.5
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:25:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"pwr\" and r[\"loc\"]==\"london\" and \n  r[\"_field\"]==\"performance\" )\n  |> aggregateWindow(every: 100ms, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"rackid\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\",\"loc\",\"_measurement\",\"rackid\"])\n  |> rename(fn: (column) => \"Rack \" + column)\n\n\n\n"
+          },
+          "refId": "A"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "thresholds": [],
+      "timeFrom": "1m",
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Performance Racks 1-6",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": false,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1241",
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1242",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 21,
+        "y": 11
+      },
+      "id": 13,
+      "links": [],
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": false,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Ascending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "8.0.6",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "amsterdam"
+              },
+              "name": "free_rack",
+              "type": "number",
+              "values": [
+                3
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "from(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:11:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"racks\")\n  |> unique(column: \"loc\")\n\n\n"
+          },
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "chennai"
+              },
+              "name": "free_rack",
+              "type": "number",
+              "values": [
+                1
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "london"
+              },
+              "name": "free_rack",
+              "type": "number",
+              "values": [
+                0
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "amsterdam"
+              },
+              "name": "free_rack_units",
+              "type": "number",
+              "values": [
+                120
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "chennai"
+              },
+              "name": "free_rack_units",
+              "type": "number",
+              "values": [
+                11
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "london"
+              },
+              "name": "free_rack_units",
+              "type": "number",
+              "values": [
+                0
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "amsterdam"
+              },
+              "name": "latitude",
+              "type": "number",
+              "values": [
+                52.377956
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "chennai"
+              },
+              "name": "latitude",
+              "type": "number",
+              "values": [
+                13.083666332
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "london"
+              },
+              "name": "latitude",
+              "type": "number",
+              "values": [
+                51.509865
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "amsterdam"
+              },
+              "name": "longitude",
+              "type": "number",
+              "values": [
+                4.89707
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "chennai"
+              },
+              "name": "longitude",
+              "type": "number",
+              "values": [
+                80.268665592
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "london"
+              },
+              "name": "longitude",
+              "type": "number",
+              "values": [
+                -0.118092
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "amsterdam"
+              },
+              "name": "name",
+              "type": "string",
+              "values": [
+                "amsterdam"
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "chennai"
+              },
+              "name": "name",
+              "type": "string",
+              "values": [
+                "chennai"
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "london"
+              },
+              "name": "name",
+              "type": "string",
+              "values": [
+                "london"
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "amsterdam"
+              },
+              "name": "total_rack",
+              "type": "number",
+              "values": [
+                5
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "chennai"
+              },
+              "name": "total_rack",
+              "type": "number",
+              "values": [
+                4
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "london"
+              },
+              "name": "total_rack",
+              "type": "number",
+              "values": [
+                10
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "amsterdam"
+              },
+              "name": "total_rack_units",
+              "type": "number",
+              "values": [
+                200
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "chennai"
+              },
+              "name": "total_rack_units",
+              "type": "number",
+              "values": [
+                44
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        },
+        {
+          "fields": [
+            {
+              "config": {},
+              "name": "Time",
+              "type": "time",
+              "values": [
+                1629382282258
+              ]
+            },
+            {
+              "config": {},
+              "labels": {
+                "loc": "london"
+              },
+              "name": "total_rack_units",
+              "type": "number",
+              "values": [
+                400
+              ]
+            }
+          ],
+          "name": "racks",
+          "refId": "B"
+        }
+      ],
+      "title": "Data Center",
+      "type": "logs"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 20,
+          "min": 6,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "kwatt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 15,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 15,
+          "valueSize": 15
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.1.2",
+      "snapshotData": [
+        {
+          "fields": [
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "kwatt"
+              },
+              "labels": {},
+              "name": "Rack _time",
+              "type": "time",
+              "values": [
+                1629383124600,
+                1629383134600,
+                1629383144600,
+                1629383154700,
+                1629383164700,
+                1629383174700
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 20,
+                "min": 6,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "kwatt"
+              },
+              "labels": {},
+              "name": "Rack 1",
+              "type": "number",
+              "values": [
+                9.18,
+                8.94,
+                8.83,
+                9.07,
+                9.19,
+                9.07
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 20,
+                "min": 6,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "kwatt"
+              },
+              "labels": {},
+              "name": "Rack 2",
+              "type": "number",
+              "values": [
+                9.68,
+                9.81,
+                9.61,
+                9.38,
+                9.59,
+                9.61
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 20,
+                "min": 6,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "kwatt"
+              },
+              "labels": {},
+              "name": "Rack 3",
+              "type": "number",
+              "values": [
+                9.06,
+                9.07,
+                9.04,
+                9.24,
+                9.34,
+                9.2
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 20,
+                "min": 6,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "kwatt"
+              },
+              "labels": {},
+              "name": "Rack 4",
+              "type": "number",
+              "values": [
+                13.44,
+                13.42,
+                13.31,
+                13.3,
+                13.48,
+                13.46
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 20,
+                "min": 6,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "kwatt"
+              },
+              "labels": {},
+              "name": "Rack 5",
+              "type": "number",
+              "values": [
+                14.45,
+                14.58,
+                14.71,
+                14.47,
+                14.4,
+                14.26
+              ]
+            },
+            {
+              "config": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "max": 20,
+                "min": 6,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "kwatt"
+              },
+              "labels": {},
+              "name": "Rack 6",
+              "type": "number",
+              "values": [
+                8.05,
+                8,
+                7.85,
+                7.75,
+                7.86,
+                7.65
+              ]
+            }
+          ],
+          "meta": {
+            "executedQueryString": "import \"strings\"\nfrom(bucket: \"test1\")\n  |> range(start: 2021-08-19T14:25:16Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"pwr\" and r[\"loc\"]==\"london\" and r[\"_field\"]==\"power\")\n  |> aggregateWindow(every: 100ms, fn: last, createEmpty: false) \n  |> pivot(rowKey:[\"_time\"], columnKey: [\"rackid\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\",\"loc\",\"_measurement\",\"rackid\"])\n  |> rename(fn: (column) => \"Rack \" + column)\n\n\n\n"
+          },
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "1m",
+      "title": "Power consumption Racks 1-6",
+      "type": "stat"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 30,
+  "snapshot": {
+    "originalUrl": "https://testplayground.grafana.net/d/F2HOPTn7k/datacenter-copy?orgId=1&from=now-15m&to=now&refresh=10s",
+    "timestamp": "2021-08-19T14:26:16.942Z"
+  },
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2021-08-19T14:25:24.600Z",
+    "raw": {
+      "from": "now-15m",
+      "to": "now"
+    },
+    "to": "2021-08-19T14:26:14.700Z"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "DataCenter Copy",
+  "uid": "F2HOPTn7k",
+  "version": 47
+}

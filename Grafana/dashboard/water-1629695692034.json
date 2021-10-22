@@ -1,0 +1,860 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB-DATABASE",
+      "label": "InfluxDB-database",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS___EXPR__",
+      "label": "__expr__",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "__expr__"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "__expr__",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.0.5"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 0,
+                  "text": "OFF"
+                },
+                "1": {
+                  "color": "dark-blue",
+                  "index": 1,
+                  "text": "ON"
+                },
+                "\"7.5\"": {
+                  "index": 2,
+                  "text": "7.5 kWh"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "noValue": "OFF",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-blue",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "from(bucket: \"test2\")\n  |> range(start: 2021-08-20T07:00:19.000Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tank\" and r[\"loc\"]==\"apartment1\" and r[\"_field\"]==\"water_in\" )\n  |> highestCurrent(n:1, groupColumns: [\"_time\"])\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\",\"_measurement\",\"loc\"])\n  |> map(fn: (r) => ({ r with status:\n      if r._value == true then 1\n      else 0\n    }))\n    |> map(fn: (r) => ({ r with pow:\n      if r._value == true then \"7.5\"\n      else \"\"\n    }))\n  |> keep(columns:[\"status\",\"pow\",\"_time\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "Motor Status",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "litre"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value apartment1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apartment1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 10,
+        "x": 5,
+        "y": 0
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tank\")\n  |> filter(fn: (r) => r[\"_field\"] == \"water_present\")\n  |> drop(columns: [\"_start\", \"_stop\", \"_field\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> rename(fn : (column) =>  strings.title(v: column))",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "45m",
+      "timeShift": null,
+      "title": "water Present",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "litre"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value apartment1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apartment1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 15,
+        "y": 0
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tank\")\n  |> filter(fn: (r) => r[\"_field\"] == \"water_out\")\n  |> drop(columns: [\"_start\", \"_stop\", \"_field\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> rename(fn : (column) =>  strings.title(v: column))",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "water used",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 40,
+          "min": 20,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 35
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 0,
+        "y": 4
+      },
+      "id": 4,
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temp\")\n  |> highestCurrent(n:2, groupColumns: [\"loc\"])\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> rename(fn : (column) =>  strings.title(v: column))\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Ø Temperature",
+      "type": "gauge"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value apartment1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apartment1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apartment2"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 10,
+        "x": 5,
+        "y": 5
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"pre\")\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> rename(fn : (column) =>  strings.title(v: column))\n",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Pressure",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "litre"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 15,
+        "y": 7
+      },
+      "id": 6,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tank\" and r[\"loc\"]==\"apartment1\")\n  |> filter(fn: (r) => r[\"_field\"] == \"water_out\")\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> window(every: 1d)\n  |> sum(column:\"water_out\")\n  |> pivot(rowKey:[\"_measurement\"], columnKey: [\"_start\"], valueColumn: \"water_out\")\n  |> drop(columns:[\"loc\",\"_stop\",\"_measurement\",\"_time\",\"_field\",\"_value\",\"_start\"])\n  |> rename(fn : (column) =>  strings.title(v: strings.split(v: column, t: \"T\")[0] ))",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "weekly water consumption",
+      "type": "bargauge"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 80,
+          "min": 40,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 60
+              },
+              {
+                "color": "dark-red",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 0,
+        "y": 9
+      },
+      "id": 2,
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"pre\")\n  |> highestCurrent(n:2, groupColumns: [\"loc\"])\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"loc\"], valueColumn: \"_value\")\n  |> rename(fn : (column) =>  strings.title(v: column))\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Ø Pressure",
+      "type": "gauge"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 30
+              },
+              {
+                "color": "semi-dark-blue",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 10
+      },
+      "id": 7,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Apartment1$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tank\" and r[\"_field\"]==\"water_present\" and r[\"loc\"]==\"apartment1\")\n  |> highestCurrent(n:2, groupColumns: [\"loc\"])\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> keep(columns:[\"_value\"])\n  |> rename(fn : (column) =>  strings.title(v: column))",
+          "refId": "A"
+        },
+        {
+          "hide": false,
+          "query": "from(bucket: \"test2\")\n  |> range(start: 2021-08-20T07:00:19.000Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"const\" and r[\"loc\"]==\"apartment1\" and r[\"_field\"]==\"tank_capacity\" )\n  |> highestCurrent(n:1, groupColumns: [\"_time\"])\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\",\"_measurement\",\"loc\"])\n  |> keep(columns:[\"_value\"])",
+          "refId": "B"
+        },
+        {
+          "datasource": "${DS___EXPR__}",
+          "expression": "$A/$B*100",
+          "hide": false,
+          "refId": "Apartment1",
+          "type": "math"
+        }
+      ],
+      "title": "Aparment 1 tank capacity",
+      "type": "gauge"
+    },
+    {
+      "datasource": "${DS_INFLUXDB-DATABASE}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 30
+              },
+              {
+                "color": "semi-dark-blue",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 10
+      },
+      "id": 20,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Apartment1$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        }
+      },
+      "pluginVersion": "8.0.5",
+      "targets": [
+        {
+          "query": "import \"strings\"\nfrom(bucket: \"test2\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tank\" and r[\"_field\"]==\"water_present\" and r[\"loc\"]==\"apartment2\")\n  |> highestCurrent(n:2, groupColumns: [\"loc\"])\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> keep(columns:[\"_value\"])\n  |> rename(fn : (column) =>  strings.title(v: column))",
+          "refId": "A"
+        },
+        {
+          "hide": false,
+          "query": "from(bucket: \"test2\")\n  |> range(start: 2021-08-20T07:00:19.000Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"const\" and r[\"loc\"]==\"apartment2\" and r[\"_field\"]==\"tank_capacity\" )\n  |> highestCurrent(n:1, groupColumns: [\"_time\"])\n  |> drop(columns: [\"_start\",\"_stop\",\"_field\",\"_measurement\",\"loc\"])\n  |> keep(columns:[\"_value\"])",
+          "refId": "B"
+        },
+        {
+          "datasource": "${DS___EXPR__}",
+          "expression": "$A/$B*100",
+          "hide": false,
+          "refId": "Apartment1",
+          "type": "math"
+        }
+      ],
+      "title": "Aparment 2 tank capacity",
+      "type": "gauge"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "water",
+  "uid": "dHKSmBnnz1",
+  "version": 3
+}
